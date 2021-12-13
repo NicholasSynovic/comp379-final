@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("data.csv")
+df = pd.read_csv("./Crimes_-_2001_to_Present.csv")
 df.columns = [c.lower().replace(' ', '_') for c in df.columns]
 df = df.dropna()
 df = df.reset_index(drop=True)
