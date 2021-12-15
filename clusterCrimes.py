@@ -24,7 +24,13 @@ def parseArgs() -> Namespace:
         type=str,
         required=True,
         help="Dataset filename",
-    )
+        )
+    parser.add_argument("-o",
+        "--output",
+        type=str,
+        required=True,
+        help="Output filename",
+        )
     return parser.parse_args()
 
 
@@ -50,7 +56,7 @@ def _visualizeClusters(label, df, col1, col2, output:str) -> PathCollection:
     i: str
     for i in u_labels:
         cls = df[label == i]
-        sc = plt.scatter(
+        sc: PathCollection = plt.scatter(
             cls[col1], cls[col2], label="Cluster {}".format(i)
         )  # save scatter
 

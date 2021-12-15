@@ -9,7 +9,12 @@
   - [Goal](#goal)
   - [Team Contributions](#team-contributions)
   - [Background](#background)
-  - [Data Preperation](#data-preperation)
+  - [Data Pre-Processing](#data-pre-processing)
+    - [Reducing Population Size](#reducing-population-size)
+    - [Feature Removal](#feature-removal)
+    - [Remaining Features](#remaining-features)
+      - [Note on Remaining Features](#note-on-remaining-features)
+    - [Correlation Matrix](#correlation-matrix)
   - [Clustering or Classification](#clustering-or-classification)
     - *[Feature Importance with Random Forest Modeling](#feature-importance-with-random-forest-modeling)*
       - *[Discovery](#discovery)*
@@ -31,15 +36,113 @@ Cluster analysis of what features best determine if an incident resulted in an a
 
 ## Background
 
-## Data Preperation
+## Data Pre-Processing
 
-In order to better visualize what I was discussing today and our justification for dropping certain features, I created a pairwise correlation analysis matrix. Basically, it shows the correlation values between different features. If they are heavily correlated, it just means that the features are essentially linked and therefore it is redundant to have both. For instance, a good example is Latitude and Y-coordinate (and vice versa with X and longitude). They both have a correlation value of 1.0 which is essentially completely linked features, which is expected as the x-y coordinates are essentially remapped latitude and longitude. It also shows, as we agreed, to drop either beat or district, as they also have a 1.0 correlation value. I think for the final dataset, I'll go ahead and keep District and Community Area as they dont seem to be that correlated so could be interesting to see what's up there. Further, as we expected, the FBI code is heavily correlated with the Primary Type (since they pretty much say the same thing) so I'd say since our scope is just Chicago, we should remove the FBI code.
+### Reducing Population Size
 
-![Processed Data Pairwise Coorelation](Processed%20Data%20Pairwise%20Coorelation%20Matrix.png)
+The Chicago Crime dataset that we are using includes all crimes reported from 2001 to today minus one to two weeks. This dataset has 22 features for each of the 7,454,088 samples. To reduce the dataset into a managable size, we limited the clustering to crime that has only occurred within 2021. This reduced dataset contains the same 22 features, but now only has 191,568 samples to cluster. This represents only 2% of the total dataset. However, as our goal is to only cluster crime that has occurred during 2021, this step was necessary to obtain our results.
 
-I went ahead and converted pretty much all the columns I could to a quantifiable integer value and will upload that file with less columns dropped incase anyone wants to mess around with it. For the simplified dataset, I will go ahead and drop the columns we discussed. I did, however, format the date to be a readable format and separated it into Date_day (day of the year out of 365), Date,month, Date_week (out of the year), Date_hour, Date_minute, and Date_dayofweek (Monday - Sunday mapped to integer values). I'll likely remove the Date_week as it essentially says the same thing as Date_month, as seen in the correlation matrix.
+### Feature Removal
 
-My idea here was to create a more simplified dataset that you all can just use as well as provide you with one that has more columns that might turn out to be fruitful incase you want to mess around with that too. I'm going to run a few more tests then I should have these csvs and python scripts uploaded tonight. Let me know if yall have any questions in the meantime!
+This dataset contained 22 features, which upon our analysis, were not needed for clustering. This is because some of the features were joins on other features, were metadata on the dataset, or were too abstract/ not indicitave for the research that we were doing.
+
+The features that were removed from the processed dataset and their corresponding reasons are (in no order):
+
+- Location
+  - This is a join on the features *Latitude* and *Longitude*.
+- Year
+  - As we're only analyzing 2021, this is just extra information
+- Case Number
+  - This is an arbitrary tracking value that isn't useful for clustering
+- ID
+  - A unique ID associated with a report
+- Block
+  - One of the many crime location specifications within the document. This one was too specific to be of any use to us
+  - There is was the potential for this feature to be too correlated with other location specifications, such as beat, district, and/or location
+  - This information was too generic for our research, while other features (such as *X Coordinate* and *Y Coordinate*) provided the neccesary specificity to perform our calculations
+- Updated On
+  - This was when the crime was updated within the dataset
+
+### Remaining Features
+
+#### Note on Remaining Features
+
+The processed dataset contained only the following features:
+
+- IUCR (Illinois Uniform Crime Reporting code)
+  - Within the raw dataset, there were approximately 300 unique IUCR codes
+  - These codes contain both letters and numbers, which were translated into unique numbers to properly quanitify the data
+  - There is a concern that IUCR codes can be too correlated with one another. We considered merging similar IUCR codes together based off of their correlated *Primary Type*, however, due to time constraints, we decided against doing so
+    - See *Figure 1* to see how many IUCR codes relate to a *Primary Type*
+  - More information on IUCR codes can be found [here](https://data.cityofchicago.org/Public-Safety/Chicago-Police-Department-Illinois-Uniform-Crime-R/c7ck-438e)
+
+<figure>
+    <img src="assets/images/dataPreperation/quantifiedIUCRCodes.png" style="width:100%; height:100%;">
+    <figcaption align = "center"><b>Figure 1</b></figcaption>
+</figure>
+
+- Primary Type
+  - This was a summarized version of the IUCR code
+    - Not as specific as an IUCR code
+    - Only 31 different *Primary Types* in our raw dataset
+  - This data had to be encoded as well
+  - See *Figure 2* to see how many crimes had a given *Primary Type* in our dataset
+
+<figure>
+    <img src="assets/images/dataPreperation/quantifiedPrimaryType.png" style="width:100%; height:100%;">
+    <figcaption align = "center"><b>Figure 2</b></figcaption>
+</figure>
+
+- Location Description
+  - This feature had 125 distinct quantitative descriptions of where crimes were reported
+  - Values of this feature had to be encoded
+- Arrest
+  - A boolean value indicating whether an arrest was made or not
+- Domestic
+  - Indicates whether the reported crime was a domestic incident as defined by the [Illinois Domestic Violence Act](https://www.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=2100)
+- Beat
+  - The smallest geographic unit of police distribution
+- District
+  - A larger geographic breakdown of police which is a superset fo *Beat*
+  - There are 22 districts in Chicago
+- Ward
+  - Areas broken up by city council districts
+  - A map of Chicago wards can be found [here](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Wards-2015-/sp34-6z76)
+  - *Wards* change frequently and are not good representations of Chicago's geography. However, since we have reduced the scope of this experiment to 2021, we view that this is an appropriate feature to include
+- Community Area
+  - Designated “community areas” of Chicago which are  broken up into a total of 77 areas
+  - *Community Area* boundaries are not political (not susceptible to redistricting or red-lining/gerrymandering), so they are fairly consistent for long term collection and analysis.
+  - A map of *Community Areas* can be found [here](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Community-Areas-current-/cauq-8yn6)
+- *X Coordinates* and *Y Coordinates*
+  - X and Y coordinates of the location where the crime was reported according to the [State Plane Illinois East NAD 1983 projection](https://spatialreference.org/ref/esri/nad-1983-stateplane-illinois-east-fips-1201-feet/)
+    - This is essentially an isolated Latitude Longitude for the City of Chicago.
+    - This is a parital location of the crime as the *X Coordinates* and corresponding *Y  Coordinates* values for a sample represent the center of the block of where an actual crime occured
+- *Latitude* and *Longitude*
+  - Global latitude and longitude of the crime reported
+  - This is a parital location of the crime as the *Latitude* and corresponding *Longitude* values for a sample represent the corner of the nearest block of where an actual crime occured
+- FBI Code
+  - Crime classification as outlined in the FBI’s [National Incident-Based Reporting System](https://www.fbi.gov/services/cjis/ucr/nibrs)
+  - Contains 26 unique FBI codes, similar in meaning to that of the Primary Type column
+  - This data had to be encoded
+
+Any feature that is not reported in this section but was included in the original dataset has been removed due to being too correlated with other features. See the [Correlation Matrix](#correlation-matrix) section for further information.
+
+### Correlation Matrix
+
+In order to better visualize what our justification for dropping certain features, we created a pairwise correlation analysis matrix.
+
+This shows the correlation values between different features. If features are heavily correlated, then they are essentially linked and therefore having all of the correlated features is redundant.
+
+For instance, *Latitude* and *Y Coordinate* (as well as *Longitude* and *X Coordinate*) both have a correlation value of 1.0. This means that they are completely linked features, and having both in the clustering algoirthm will, at best, be mute.
+
+It also shows to drop either beat or district, as they also have a 1.0 correlation value. Further, as expected, the *FBI Code* is heavily correlated with the *Primary Type* (since they pretty much say the same thing).
+
+See *Figure 3* for an image of our Correlation Matrix.
+
+<figure>
+    <img src="assets/images/dataPreperation/correlationMatrix.png" style="width:100%; height:100%;">
+    <figcaption align = "center"><b>Figure 3</b></figcaption>
+</figure>
 
 ## Clustering or Classification
 
