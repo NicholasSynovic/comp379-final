@@ -9,7 +9,7 @@
   - [Goal](#goal)
   - [Team Contributions](#team-contributions)
   - [Background](#background)
-  - [Data Preperation](#data-preperation)
+  - [Data Pre-Processing](#data-pre-processing)
     - [Reducing Population Size](#reducing-population-size)
     - [Feature Removal](#feature-removal)
     - [Remaining Features](#remaining-features)
@@ -36,7 +36,7 @@ Cluster analysis of what features best determine if an incident resulted in an a
 
 ## Background
 
-## Data Preperation
+## Data Pre-Processing
 
 ### Reducing Population Size
 
