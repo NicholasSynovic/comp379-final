@@ -14,6 +14,7 @@
     - [Feature Importance with Random Forest Modeling](#feature-importance-with-random-forest-modeling)
       - [Discovery](#discovery)
   - [Clustering](#clustering)
+    - [Elbow Method](#elbow-method)
   - [Conclusion](#conclusion)
 
 ## Goal
@@ -39,5 +40,7 @@ Cluster analysis of what features best determine if an incident resulted in an a
 #### Discovery
 
 ## Clustering
+
+### Elbow Method
 
 ## Conclusion
