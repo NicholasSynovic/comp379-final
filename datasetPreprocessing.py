@@ -1,10 +1,8 @@
 import csv
-import os
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 
 
 def get_translation_table(filename):
