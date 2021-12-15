@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def get_translation_table(filename):
-    file_path = "Data_Translation_Tables\{}.csv"
+    file_path = "data/translationTables/{}.csv"
     with open(file_path.format(filename), "r") as inp:
         reader = csv.reader(inp)
         dict_csv = {rows[0]: rows[1] for rows in reader}
@@ -19,12 +19,12 @@ def save_df_to_zip(dataframe, filename):
     dataframe.to_csv(zipfile.format(filename), index=False, compression=compress_df)
 
 
-data_raw = pd.read_csv("Crimes_2021_Dataset.csv")
+data_raw = pd.read_csv("data/raw.csv")
 
 
 # Drop the following arbitrary columns:
 # "ID","Case Number","Updated On", "Year", "Location", "Year", "Block"
-data = pd.read_csv("Crimes_2021_Dataset.csv")
+data = pd.read_csv("data/raw.csv")
 data = data.drop(
     ["ID", "Case Number", "Updated On", "Location", "Year", "Block"], axis=1
 )
