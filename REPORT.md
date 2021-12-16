@@ -31,6 +31,7 @@ We want to cluster Chicago crime reports based off of a variety of features.
 - **Jacob Palmer** - Preprocessing the dataset to reduce the feature set. Turning descriptive data into quantifiable values; Has a CSV to convert descriptions into digits
 - **Emmanel Amobi** - Taking different features and creating clusters using K-means; This gets multiple different clustsers to present
 - **Nicholas Synovic** - Working on the report and presentation
+- **Zac Neuhardt** - Worked on presentation and provided technical insight into results
 
 ## Data Pre-Processing
 
