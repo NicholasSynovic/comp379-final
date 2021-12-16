@@ -30,7 +30,6 @@ We want to cluster Chicago crime reports based off of a variety of features.
 - **Brian Nguyen** - Feature importance using a random forest model to determine what features would result in the best labels in an example classification problem; Meant to prove that clustering is the proper way of analyzing this dataset because none of the features of predictive of the labels in question
 - **Jacob Palmer** - Preprocessing the dataset to reduce the feature set. Turning descriptive data into quantifiable values; Has a CSV to convert descriptions into digits
 - **Emmanel Amobi** - Taking different features and creating clusters using K-means; This gets multiple different clustsers to present
-- **Zac Neuhardt** - Correlating crimes across community areas; Clustering with K-means
 - **Nicholas Synovic** - Working on the report and presentation
 
 ## Data Pre-Processing
