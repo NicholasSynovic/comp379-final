@@ -25,7 +25,8 @@ def parseArgs() -> Namespace:
         "-d",
         "--dataset",
         type=str,
-        required=True,
+        required=False,
+        default="data/processedDataset.csv",
         help="Dataset filename",
     )
     parser.add_argument(

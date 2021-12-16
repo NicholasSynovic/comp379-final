@@ -84,4 +84,4 @@ data_s = data_s.dropna(subset=["Latitude", "Longitude"])
 
 # Save processed and optimized datasets to zip/csv
 
-data_s.to_csv("data/processedDataset.csv")
+data_s.to_csv("data/processedDataset.csv", index=False)
