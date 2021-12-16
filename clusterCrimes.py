@@ -1,15 +1,18 @@
 """
 Chicago Crimes Dataset, Kmeans clustering
 """
-from matplotlib.collections import PathCollection
+from argparse import ArgumentParser, Namespace
+from itertools import permutations
+from typing import Iterable
+
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+from matplotlib.collections import PathCollection
 from pandas.core.frame import DataFrame
+from progress.spinner import Spinner
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import LabelEncoder
-
-from argparse import ArgumentParser, Namespace
 
 
 def parseArgs() -> Namespace:
@@ -24,17 +27,20 @@ def parseArgs() -> Namespace:
         type=str,
         required=True,
         help="Dataset filename",
-        )
-    parser.add_argument("-o",
-        "--output",
-        type=str,
-        required=True,
-        help="Output filename",
-        )
+    )
+    parser.add_argument(
+        "-c",
+        "--clusters",
+        type=int,
+        required=False,
+        default=3,
+        help="Number of clusters to put data into",
+    )
+
     return parser.parse_args()
 
 
-def preprocessDataset(dataset:str)    -> DataFrame:
+def preprocessDataset(dataset: str) -> DataFrame:
     df: DataFrame = pd.read_csv(dataset)
     # remove space from column names
     df.columns = [c.lower().replace(" ", "_") for c in df.columns]
@@ -49,34 +55,41 @@ def preprocessDataset(dataset:str)    -> DataFrame:
 
 
 # visualize the clusters, 2d for now, and 3 clusters
-def _visualizeClusters(label, df, col1, col2, output:str) -> PathCollection:
-    u_labels: np.ndarray = np.unique(label)  # get unique labels
-    sc:int = 0
+def _visualizeClusters(
+    label: np.ndarray,
+    df: DataFrame,
+    col1: str,
+    col2: str,
+    output: str,
+) -> PathCollection:
+    u_labels: np.ndarray = np.unique(label)
+    sc: int = 0
 
     i: str
     for i in u_labels:
         cls = df[label == i]
         sc: PathCollection = plt.scatter(
             cls[col1], cls[col2], label="Cluster {}".format(i)
-        )  # save scatter
+        )
 
     plt.legend(loc="lower left")
-
     plt.xlabel(col1)
     plt.ylabel(col2)
-
-    # plt.imshow(depth_)
-    plt.savefig(output)
-    # plt.show()
-    # save for later
+    plt.savefig(f"clusters/{output}")
+    plt.clf()
     return sc
 
 
-# labels = array of columns
-def fitKMeans(labels, kmeans, df):
-    label = kmeans.fit_predict(df[labels])
-    u_labels = np.unique(label)
-    _visualizeClusters(label, df, labels[0], labels[1], output="output.png")  # only 2d
+def fitKMeans(model: KMeans, labels: list, df: DataFrame, clusters: int = 3) -> KMeans:
+    fitted: np.ndarray = model.fit_predict(df[labels])
+    _visualizeClusters(
+        label=fitted,
+        df=df,
+        col1=labels[0],
+        col2=labels[1],
+        output=f"{labels[0]}_{labels[1]}.png",
+    )
+    return model
 
 
 def main():
@@ -84,11 +97,22 @@ def main():
 
     df: DataFrame = preprocessDataset(args.dataset)
 
-    kmeans:KMeans = KMeans(n_clusters=3, random_state=0)
+    perms: Iterable = permutations(df.columns.tolist(), 2)
+    models: list = [KMeans(n_clusters=args.clusters) for _ in range(perms.__sizeof__())]
+    modelIndex: int = 0
 
-    # run_k_means(['district', 'community_area'], kmeans, df)
-    # run_k_means(['primary_type', 'community_area'], kmeans, df)
-    fitKMeans(["primary_type", "description"], kmeans, df)
+    with Spinner(
+        f"Executing K-Means clustering with {args.clusters} clusters... "
+    ) as spinner:
+        for permuation in perms:
+            fitKMeans(
+                model=models[modelIndex],
+                labels=list(permuation),
+                clusters=args.clusters,
+                df=df,
+            )
+            modelIndex += 1
+            spinner.next()
 
 
 if __name__ == "__main__":

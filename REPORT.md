@@ -168,3 +168,12 @@ Because of the seemingly illogical analysis of a classification model on our dat
 ### Elbow Method
 
 ## Conclusion
+
+This experiment has been an introduction of machine learing practices applied to civil law/ data to us. While we do not consider the results of this experiment to be final or representative of Chicago crime, we did learn and solidify our understanding of machine learning in the following areas:
+
+- The *No Free Lunch Theorm*
+  - Just because we tried out the above clustering techniques on the dataset, does not mean that we found the best or most divisive features to cluster on. Further exploration on the different features of the dataset as well as other clustering algorithms must be done to fully understand what is the most predictive feature(s) of the datset
+- Label Encoding
+  - Nearly all of the values of the dataset needed to be encoded into an understandable format that `scikit-learn` could understand and operate on
+- Clustering
+  - We found that a clustering analysis of this dataset was not the best approach. This is because clustering generally requires a feature or features that has a range of values. However, with the way that we handled this dataset, we found that clustering was not able to properly make distinctions between the different crimes reported
