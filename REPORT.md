@@ -24,7 +24,7 @@
 
 ## Goal
 
-Cluster analysis of what features best determine if an incident resulted in an arrest or not. Goal is to find interesting relationships between features and labels
+We want to cluster Chicago crime reports based off of a variety of features.
 
 ## Team Contributions
 
@@ -34,8 +34,6 @@ Cluster analysis of what features best determine if an incident resulted in an a
 - **Zac Neuhardt** - Correlating crimes across community areas; Clustering with K-means
 - **Nicholas Synovic** - Working on the report and presentation
 
-## Background
-
 ## Data Pre-Processing
 
 ### Reducing Population Size
@@ -44,7 +42,7 @@ The Chicago Crime dataset that we are using includes all crimes reported from 20
 
 ### Feature Removal
 
-This dataset contained 22 features, which upon our analysis, were not needed for clustering. This is because some of the features were joins on other features, were metadata on the dataset, or were too abstract/ not indicitave for the research that we were doing.
+This dataset contained 22 features, which upon our analysis, were not needed for clustering. This is because some of the features were joins on other features, were metadata on the dataset, or were too abstract/ not indicitave for the research that w  e were doing.
 
 The features that were removed from the processed dataset and their corresponding reasons are (in no order):
 
