@@ -7,8 +7,8 @@ import seaborn as sns
 
 
 def get_translation_table(filename):
-    file_path = "Data_Translation_Tables\{}.csv"
-    with open(file_path.format(filename), "r") as inp:
+    file_path = f"data/translationTables/{filename}"
+    with open(file_path, "r") as inp:
         reader = csv.reader(inp)
         dict_csv = {rows[0]: rows[1] for rows in reader}
     return dict_csv
@@ -42,19 +42,17 @@ def correlation_matrix(df: pd.DataFrame):
         ax=ax,
     )
     saveable = _.get_figure()
+    saveable.savefig("data/Dataset_Coorelation_Matrix.png")
 
-
-#     saveable.savefig("Dataset_Coorelation_Matrix.jpg")
-
-data_raw = pd.read_csv("Crimes_2021_Dataset.csv")
+data_raw = pd.read_csv("data/dataset.csv")
 data_raw.head()
 
 # Shows the information regarding the original dataset and it's types
-data_raw.info()
+# data_raw.info()
 
 # Drop the following arbitrary columns:
 # "ID","Case Number","Updated On", "Year", "Location"
-data = pd.read_csv("Crimes_2021_Dataset.csv")
+data = pd.read_csv("data/dataset.csv")
 data = data.drop(
     ["ID", "Case Number", "Updated On", "Location", "Year", "Block"], axis=1
 )
@@ -69,13 +67,13 @@ data["Domestic"] = data_raw["Domestic"].map(boolean_dict)
 
 # Convert the following columns using the translation tables:
 # "IUCR", "Primary Type", "Location Description", "Description", "FBI Code"
-primary_type_dict = get_translation_table("Primary_Type_Translation_Table")
+primary_type_dict = get_translation_table("Primary_Type_Translation_Table.csv")
 location_description_dict = get_translation_table(
-    "Location_Description_Translation_Table"
+    "Location_Description_Translation_Table.csv"
 )
-iucr_dict = get_translation_table("IUCR_Translation_Table")
-fbi_code_dict = get_translation_table("FBI_Code_Translation_Table")
-description_dict = get_translation_table("Description_Translation_Table")
+iucr_dict = get_translation_table("IUCR_Translation_Table.csv")
+fbi_code_dict = get_translation_table("FBI_Code_Translation_Table.csv")
+description_dict = get_translation_table("Description_Translation_Table.csv")
 
 data["Primary Type"] = (
     data_raw["Primary Type"].map(primary_type_dict).fillna("0").astype(np.int64)
@@ -92,26 +90,22 @@ data["Description"] = (
     data_raw["Description"].map(description_dict).fillna("0").astype(np.int64)
 )
 
-data.tail()
-
-
-data.info()
-
+# data.tail()
 
 # Convert date to readable format using the following format:
 # '%m/%d/%Y %H:%M'
 # Then, seperate Date into individual day, month, week, hour, minute, and dayofweek columns for analysis
-data["Date"] = pd.to_datetime(
-    data_raw["Date"], format="%m/%d/%Y %H:%M", errors="coerce"
-)
-data["Date_day"] = data["Date"].dt.day
-data["Date_month"] = data["Date"].dt.month
-data["Date_week"] = data["Date"].dt.week
-data["Date_hour"] = data["Date"].dt.hour
-data["Date_minute"] = data["Date"].dt.minute
-data["Date_dayofweek"] = data["Date"].dt.dayofweek
-data.tail()
-data.info()
+# data["Date"] = pd.to_datetime(
+#     data_raw["Date"], format="%m/%d/%Y %H:%M", errors="coerce"
+# )
+# data["Date_day"] = data["Date"].dt.day
+# data["Date_month"] = data["Date"].dt.month
+# data["Date_week"] = data["Date"].dt.week
+# data["Date_hour"] = data["Date"].dt.hour
+# data["Date_minute"] = data["Date"].dt.minute
+# data["Date_dayofweek"] = data["Date"].dt.dayofweek
+# data.tail()
+# data.info()
 
 
 # Sample testing for pairplots and pairwise coorelation matrices
@@ -119,6 +113,6 @@ correlation_matrix(data)
 
 
 data_s = data.drop(
-    ["Ward", "FBI Code", "X Coordinate", "Y Coordinate", "Date_week", "Beat"], axis=1
+    ["Ward", "FBI Code", "X Coordinate", "Y Coordinate", "Beat"], axis=1
 )
 correlation_matrix(data_s)
