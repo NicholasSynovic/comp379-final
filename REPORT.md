@@ -165,7 +165,25 @@ Because of the seemingly illogical analysis of a classification model on our dat
 
 ## Clustering
 
+We performed K-Means clustering on every permuation of two features in our processed dataset. This resulted in 90 different and unique graphs being generated as output.
+
+We performed K-Means clustering using only 3 clusters, however, this can be adjusted for *n* clusters via the `-c` flag of our [clusterCrimes.py](clusterCrimes.py) program. We also set the `random_state` parameter equal to 0 for all of our models.
+
+What we found were the following:
+
+- Clustering of discrete values against continous ones resulted in clusters that only appeared at the minima and maxima of the x axis. This is because since we are graphing values 1 to n on the y axis, and only 1 or 0 on the x axis, data will only be found between (0, q) or (0, q) where q is a value between 1 to  n
+- Clustering one feature on the x axis and another on the y axis for one graph, and switching the axises on another graph (i.e: *description x primary_type* and *primary_type x description*) resulted in similar graphs being produced, but with the axis roted 90 degrees
+
 ### Elbow Method
+
+The reason why 3 clusters where choosen to cluster our data was becuase we ran an Elbow Method test on our dataset and found that an appropriate elbow was found at 3.
+
+See *Figure 6* for the Elobw Method chart.
+
+<figure>
+    <img src="assets/images/clustering/elbowMethod.png" style="width:100%; height:100%;">
+    <figcaption align = "center"><b>Figure 6</b></figcaption>
+</figure>
 
 ## Conclusion
 
