@@ -15,9 +15,8 @@
     - [Remaining Features](#remaining-features)
       - [Note on Remaining Features](#note-on-remaining-features)
     - [Correlation Matrix](#correlation-matrix)
-  - [Clustering or Classification](#clustering-or-classification)
+  - [Clustering or Classification?](#clustering-or-classification)
     - *[Feature Importance with Random Forest Modeling](#feature-importance-with-random-forest-modeling)*
-      - *[Discovery](#discovery)*
   - [Clustering](#clustering)
     - *[Elbow Method](#elbow-method)*
   - [Conclusion](#conclusion)
@@ -144,14 +143,27 @@ See *Figure 3* for an image of our Correlation Matrix.
     <figcaption align = "center"><b>Figure 3</b></figcaption>
 </figure>
 
-## Clustering or Classification
+## Clustering or Classification?
+
+Upon forming the initial analysis question for this dataset, we had a decision to make of whether we would analyze it from the perspective of a classification or clustering problem. Simply looking at the raw dataset itself, it was clear that the majority of features were nominal and categorical, which does not necessarily make it a great fit for quanititative analysis by nature. 
 
 ### Feature Importance with Random Forest Modeling
 
-![Feature Importance](./feature_importance/feature_importance.png)
-![Feature Importance Output](./feature_importance/feature_importance_output.png)
+By utilizing a random forest model, we chose to perform an sample classification analysis to get an idea of the relative importance each feature might have in terms of prediction importance. With the `Arrest` feature as the dependent variable and all others as the independent variables, it seemed that the most important predicting features were the `Description`, `IUCR`, and `Primary Type` of a select row (please see *Figure 4*). Upon first thought, this made intuitive sense as whether an arrest was made could definitely be influenced by what kind of crime was commited. 
 
-#### Discovery
+However, after the first inital top three features there was a significant drop off in importance scores. Taking a look at two of the features with lesser importance respectively, `Date_minute` and `Date_hour`, the analysis seemed to falter in reasonable logic as there is no valid reason why the minute of an hour would reflect more importance than the hour of the day an arrest might be made (please see *Figure 5*). An explanation for this discrepency in logic might be attributed to the fact that there are simply more numerical values in minutes measurement (60 possible values) as compared to hours (24 possible values). 
+
+Because of the seemingly illogical analysis of a classification model on our dataset, we opted to perform an exploratory clustering analysis instead to discover if there are any interesting groupings to be had. 
+
+<figure>
+    <img src="feature_importance/feature_importance.png" style="width:100%; height:100%;">
+    <figcaption align = "center"><b>Figure 4</b></figcaption>
+</figure>
+
+<figure>
+    <img src="feature_importance/feature_importance_output.png" style="width:100%; height:100%;">
+    <figcaption align = "center"><b>Figure 5</b></figcaption>
+</figure>
 
 ## Clustering
 
