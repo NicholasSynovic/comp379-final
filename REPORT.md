@@ -73,10 +73,8 @@ The processed dataset contained only the following features:
     - See *Figure 1* to see how many IUCR codes relate to a *Primary Type*
   - More information on IUCR codes can be found [here](https://data.cityofchicago.org/Public-Safety/Chicago-Police-Department-Illinois-Uniform-Crime-R/c7ck-438e)
 
-<figure>
-    <img src="assets/images/dataPreperation/quantifiedIUCRCodes.png" style="width:100%; height:100%;">
-    <figcaption align = "center"><b>Figure 1</b></figcaption>
-</figure>
+![assets/images/dataPreperation/quantifiedIUCRCodes.png](assets/images/dataPreperation/quantifiedIUCRCodes.png)
+**Figure 1**
 
 - Primary Type
   - This was a summarized version of the IUCR code
@@ -85,10 +83,8 @@ The processed dataset contained only the following features:
   - This data had to be encoded as well
   - See *Figure 2* to see how many crimes had a given *Primary Type* in our dataset
 
-<figure>
-    <img src="assets/images/dataPreperation/quantifiedPrimaryType.png" style="width:100%; height:100%;">
-    <figcaption align = "center"><b>Figure 2</b></figcaption>
-</figure>
+![assets/images/dataPreperation/quantifiedPrimaryType.png](assets/images/dataPreperation/quantifiedPrimaryType.png)
+**Figure 2**
 
 - Location Description
   - This feature had 125 distinct quantitative descriptions of where crimes were reported
@@ -136,10 +132,8 @@ It also shows to drop either beat or district, as they also have a 1.0 correlati
 
 See *Figure 3* for an image of our Correlation Matrix.
 
-<figure>
-    <img src="assets/images/dataPreperation/correlationMatrix.png" style="width:100%; height:100%;">
-    <figcaption align = "center"><b>Figure 3</b></figcaption>
-</figure>
+![assets/images/dataPreperation/correlationMatrix.png](assets/images/dataPreperation/correlationMatrix.png)
+**Figure 3**
 
 ## Clustering or Classification?
 
@@ -153,15 +147,11 @@ However, after the first inital top three features there was a significant drop 
 
 Because of the seemingly illogical analysis of a classification model on our dataset, we opted to perform an exploratory clustering analysis instead to discover if there are any interesting groupings to be had.
 
-<figure>
-    <img src="feature_importance/feature_importance.png" style="width:100%; height:100%;">
-    <figcaption align = "center"><b>Figure 4</b></figcaption>
-</figure>
+![feature_importance/feature_importance.png](feature_importance/feature_importance.png)
+**Figure 4**
 
-<figure>
-    <img src="feature_importance/feature_importance_output.png" style="width:100%; height:100%;">
-    <figcaption align = "center"><b>Figure 5</b></figcaption>
-</figure>
+![feature_importance/feature_importance_output.png](feature_importance/feature_importance_output.png)
+**Figure 5**
 
 ## Clustering
 
@@ -180,10 +170,8 @@ The reason why 3 clusters where choosen to cluster our data was becuase we ran a
 
 See *Figure 6* for the Elobw Method chart.
 
-<figure>
-    <img src="assets/images/clustering/elbowMethod.png" style="width:100%; height:100%;">
-    <figcaption align = "center"><b>Figure 6</b></figcaption>
-</figure>
+![assets/images/clustering/elbowMethod.png](assets/images/clustering/elbowMethod.png)
+**Figure 6**
 
 ## Conclusion
 
